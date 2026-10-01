@@ -1,19 +1,9 @@
 'use strict';
-const upath = require('upath');
-const sh = require('shelljs');
-const renderPug = require('./render-pug');
+const fs = require('fs');
+const path = require('path');
 
-const srcPath = upath.resolve(upath.dirname(__filename), '../src');
+const source = path.resolve(__dirname, '../src/pug/index.html');
+const destination = path.resolve(__dirname, '../index.html');
 
-sh.find(srcPath).forEach(_processFile);
-
-function _processFile(filePath) {
-    if (
-        filePath.match(/\.pug$/)
-        && !filePath.match(/include/)
-        && !filePath.match(/mixin/)
-        && !filePath.match(/\/pug\/layouts\//)
-    ) {
-        renderPug(filePath);
-    }
-}
+fs.copyFileSync(source, destination);
+console.log(`### INFO: Copied ${source} to ${destination}`);
